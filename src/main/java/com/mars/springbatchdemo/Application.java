@@ -16,7 +16,6 @@ import static java.lang.String.format;
 /**
  * 批处理主程序
  */
-//@EnableBatchProcessing
 @SpringBootApplication
 @EnableTransactionManagement
 public class Application {
