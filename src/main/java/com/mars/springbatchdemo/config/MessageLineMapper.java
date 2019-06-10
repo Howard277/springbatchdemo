@@ -4,8 +4,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.MappingJsonFactory;
 import com.mars.springbatchdemo.bean.Message;
 import org.springframework.batch.item.file.LineMapper;
-
-import java.util.Map;
+import java.util.Date;
 
 public class MessageLineMapper implements LineMapper {
     private MappingJsonFactory factory = new MappingJsonFactory();
@@ -16,6 +15,8 @@ public class MessageLineMapper implements LineMapper {
         Message message = new Message();
         message.setContent(line);
         message.setObjectId(line);
+        message.setCreatedTime(new Date());
+        message.setLastModifiedTime(new Date());
         // 转换逻辑
         return message;
     }

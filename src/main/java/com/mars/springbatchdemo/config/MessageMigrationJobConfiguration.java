@@ -14,7 +14,6 @@ import org.springframework.core.io.FileSystemResource;
 
 import javax.persistence.EntityManagerFactory;
 import java.io.File;
-import java.io.Writer;
 
 public class MessageMigrationJobConfiguration {
 
@@ -29,7 +28,7 @@ public class MessageMigrationJobConfiguration {
     @Autowired
     private MessageItemReadListener messageItemReadListener;
     @Autowired
-    private MessageWriteListener messageWriteListener;
+    private MessageItemWriteListener messageWriteListener;
     @Autowired
     private EntityManagerFactory entityManager;
 
@@ -41,7 +40,7 @@ public class MessageMigrationJobConfiguration {
     }
 
     @Bean
-    public FlatFileItemReader jsonMessageReader() {
+    public FlatFileItemReader messageItemReader() {
         FlatFileItemReader reader = new FlatFileItemReader();
         reader.setResource(new FileSystemResource(new File(MESSAGE_FILE)));
         reader.setLineMapper(new MessageLineMapper());
@@ -54,11 +53,11 @@ public class MessageMigrationJobConfiguration {
     }
 
     @Bean
-    public Step messageMigrationStep(@Qualifier("jsonMessageReader") FlatFileItemReader jsonMessageReader,
+    public Step messageMigrationStep(@Qualifier("messageItemReader") FlatFileItemReader messageItemReader,
                                      @Qualifier("messageItemWriter") JpaItemWriter messageItemWriter) {
         return stepBuilderFactory.get("messageMigrationStep")
                 .chunk(CHUNK_SIZE)
-                .reader(jsonMessageReader).faultTolerant().skip(JsonParseException.class).skipLimit(SKIP_LIMIT)
+                .reader(messageItemReader).faultTolerant().skip(JsonParseException.class).skipLimit(SKIP_LIMIT)
                 .listener(messageItemReadListener)
                 .writer(messageItemWriter).faultTolerant().skip(Exception.class).skipLimit(SKIP_LIMIT)
                 .listener(messageWriteListener)

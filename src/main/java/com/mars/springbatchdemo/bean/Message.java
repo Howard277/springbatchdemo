@@ -8,7 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-//import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -22,10 +22,10 @@ public class Message {
 
     @Column(name = "content")
     private String content;
-//
-//    @Column(name = "last_modified_time")
-//    private LocalDateTime lastModifiedTime;
-//
-//    @Column(name = "created_time")
-//    private LocalDateTime createdTime;
+
+    @Column(name = "last_modified_time")
+    private Date lastModifiedTime;
+
+    @Column(name = "created_time")
+    private Date createdTime;
 }

@@ -11,7 +11,7 @@ import java.util.List;
 
 @Slf4j
 @Component
-public class MessageWriteListener implements ItemWriteListener {
+public class MessageItemWriteListener implements ItemWriteListener {
     @Override
     public void beforeWrite(List items) {
     }
