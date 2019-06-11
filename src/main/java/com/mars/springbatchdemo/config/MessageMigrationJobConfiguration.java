@@ -31,6 +31,8 @@ public class MessageMigrationJobConfiguration {
     private MessageItemWriteListener messageWriteListener;
     @Autowired
     private EntityManagerFactory entityManager;
+    @Autowired
+    private MessageProcessor messageProcessor;
 
     @Bean
     public JpaItemWriter messageItemWriter() {
@@ -59,6 +61,7 @@ public class MessageMigrationJobConfiguration {
                 .chunk(CHUNK_SIZE)
                 .reader(messageItemReader).faultTolerant().skip(JsonParseException.class).skipLimit(SKIP_LIMIT)
                 .listener(messageItemReadListener)
+                .processor(messageProcessor).faultTolerant().skip(Exception.class).skipLimit(SKIP_LIMIT)
                 .writer(messageItemWriter).faultTolerant().skip(Exception.class).skipLimit(SKIP_LIMIT)
                 .listener(messageWriteListener)
                 .build();
